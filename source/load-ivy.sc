@@ -1,7 +1,9 @@
-interp.repositories() ::: List(
-  coursierapi.MavenRepository.of("https://oss.sonatype.org/content/repositories/snapshots")
-)
+//this works for windows 10 with installation instructions in Install.md and graphviz's dot.exe in the PATH environment variable
+import coursier.MavenRepository
 
+interp.repositories.update(
+  interp.repositories() ::: List(MavenRepository("https://oss.sonatype.org/content/repositories/snapshots"))
+)
 @
 
 interp.configureCompiler(x => x.settings.source.value = scala.tools.nsc.settings.ScalaVersion("2.11.12"))
@@ -155,9 +157,9 @@ def generateVisualizations(gen: () => chisel3.RawModule): (String, String) = {
       x.execute(circuitState)
     }
 
-    s"cp build/${readableTop}.dot.svg build/${uniqueTop}.dot.svg"!!
+    s"cmd.exe /c copy build\\${readableTop}.dot.svg build\\${uniqueTop}.dot.svg"lineStream_!
 
-    s"cp build/${readableTop}_hierarchy.dot.svg build/${uniqueTop}_hierarchy.dot.svg"!!
+    s"cmd.exe /c copy build\\${readableTop}_hierarchy.dot.svg build\\${uniqueTop}_hierarchy.dot.svg"lineStream_!
     
     val moduleView = targetDir + "/" + uniqueTop + ".dot.svg"
     val x = """<a name="top"></a><img src=" """ + moduleView + """" alt="Module View";" />"""
